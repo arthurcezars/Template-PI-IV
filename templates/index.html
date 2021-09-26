@@ -16,13 +16,59 @@
       <div class="collapse navbar-collapse text-center justify-content-center" id="navbar15">
         <ul class="navbar-nav">
           <li class="nav-item mx-2"> <a class="nav-link" href="#">FAQ</a> </li>
-          <li class="nav-item mx-2"> <a class="nav-link navbar-brand mr-0 text-white" href="#"><i class="fa d-inline fa-lg fa-stop-circle-o"></i>
+          <li class="nav-item mx-2"> <a class="nav-link navbar-brand mr-0 text-white" href="{{ url_for("index") }}"><i class="fa d-inline fa-lg fa-stop-circle-o"></i>
               <b> IMPOSTÔMETRO</b></a> </li>
           <li class="nav-item mx-2"> <a class="nav-link" href="#">About us</a> </li>
         </ul>
       </div>
     </div>
   </nav>
+  <div class="py-5" style="" >
+    <div class="container">
+      <div class="row">
+        <div class="ml-auto col-lg-7 text-center text-lg-left">
+          <h1>Impostômestro</h1>
+          <p class="mb-0">Selecione um estado para ver a sua arrecadação.</p>
+        </div>
+        <div class="col-lg-4 d-flex justify-content-center align-items-center p-3">
+          <form class="form-inline mb-0" method="get">
+            <div class="input-group"> <input list="estados" name="estados" class="form-control" placeholder="Selecione um estado" id="form2">
+                <datalist id="estados">
+                    <option value="ac">Acre</option>
+                    <option value="al">Alagoas</option>
+                    <option value="am">Amazonas</option>
+                    <option value="ap">Amapá</option>
+                    <option value="ba">Bahia</option>
+                    <option value="ce">Ceará</option>
+                    <option value="df">Distrito Federal</option>
+                    <option value="es">Espírito Santo</option>
+                    <option value="go">Goiás</option>
+                    <option value="ma">Maranhão</option>
+                    <option value="mg">Minas Gerais</option>
+                    <option value="ms">Mato Grosso do Sul</option>
+                    <option value="mt">Mato Grosso</option>
+                    <option value="pa">Pará</option>
+                    <option value="pb">Paraíba</option>
+                    <option value="pe">Pernambuco</option>
+                    <option value="pi">Piauí</option>
+                    <option value="pr">Paraná</option>
+                    <option value="rj">Rioo de Janeiro</option>
+                    <option value="rn">Rio Grande do Norte</option>
+                    <option value="ro">Rondônia</option>
+                    <option value="rr">Roraima</option>
+                    <option value="rs">Rio Grande do Sul</option>
+                    <option value="sc">Santa Catarina</option>
+                    <option value="se">Sergipe</option>
+                    <option value="sp">São Paulo</option>
+                    <option value="to">Tocantins</option>
+                </datalist>
+              <div class="input-group-append"> <button class="btn btn-primary" type="submit">Pesquisar</button> </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="py-5">
       {% for imposto in impostos %}
     <div class="container">
