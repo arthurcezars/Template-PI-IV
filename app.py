@@ -20,7 +20,7 @@ def index():  # put application's code here
     if (estado_escolhido == None):
         tela_imposto = [f"https://impostometro.com.br/widget/contador/"]
     else:
-        tela_imposto = [f"https://impostometro.com.br/widget/contador/{estado_escolhido}"]
+        tela_imposto = [f"https://impostometro.com.br/widget/contador/{estado_escolhido.lower()}"]
 
     return render_template("index.html", impostos=tela_imposto)
 
