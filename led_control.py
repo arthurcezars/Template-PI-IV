@@ -75,6 +75,7 @@ def temperatura(arrecadacao):
                         pixels[i] = (255, 255, 0)
                     else:
                         pixels[i] = (255, 0, 0)
+            pixels.show()
 
     except KeyboardInterrupt:
         # Apaga todos os leds
