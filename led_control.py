@@ -52,6 +52,7 @@ def rainbow_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
+
 def temperatura(arrecadacao):
     try:
         pixels.fill((0, 0, 0))
@@ -59,22 +60,22 @@ def temperatura(arrecadacao):
         while True:
             print(arrecadacao)
             if arrecadacao < 1000000:
-                for i in 5:
-                    pixels[i] = (0, 255, 0)
+                for x in range(5):
+                    pixels[x] = (0, 255, 0)
             elif arrecadacao > 1000000 and arrecadacao < 1000000000:
-                for i in 10:
-                    if i <= 4:
-                        pixels[i] = (0, 255, 0)
+                for x in range(10):
+                    if x <= 4:
+                        pixels[x] = (0, 255, 0)
                     else:
-                        pixels[i] = (255, 255, 0)
+                        pixels[x] = (255, 255, 0)
             else:
-                for i in 15:
-                    if i <= 4:
-                        pixels[i] = (0, 255, 0)
-                    elif i <= 9:
-                        pixels[i] = (255, 255, 0)
+                for x in range(15):
+                    if x <= 4:
+                        pixels[x] = (0, 255, 0)
+                    elif x <= 9:
+                        pixels[x] = (255, 255, 0)
                     else:
-                        pixels[i] = (255, 0, 0)
+                        pixels[x] = (255, 0, 0)
             pixels.show()
 
     except KeyboardInterrupt:
@@ -82,6 +83,7 @@ def temperatura(arrecadacao):
         pixels.fill((0, 0, 0))
         pixels.show()
         GPIO.cleanup()
+
 
 try:
     while True:

@@ -1,4 +1,4 @@
-from doctest import debug
+#from doctest import debug
 
 from flask import Flask, render_template, request
 import  requests
@@ -16,6 +16,7 @@ def index():  # put application's code here
     if (estado_escolhido == None):
         tela_imposto = [f"https://impostometro.com.br/widget/contador/"]
 
+        print(type(5000000000))
         #temperatura(5000000000)
     else:
         tela_imposto = [f"https://impostometro.com.br/widget/contador/{estado_escolhido.lower()}"]
@@ -26,10 +27,11 @@ def index():  # put application's code here
 
         arrecadacao = int(dados['Valor'])
         print(arrecadacao)
+        print(type(arrecadacao))
         #temperatura(arrecadacao)
 
     return render_template("index.html", impostos=tela_imposto)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080)
