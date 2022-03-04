@@ -1,116 +1,56 @@
-# Programa: Led enderecavel Neopixel com Raspberry Pi
-# Adaptacoes: Arduino e Cia
-# Baseado no programa exemplo da Adafruit
+import spidev
+import ws2812
 
-import time
-import board
-import neopixel
-import RPi.GPIO as GPIO
+SPI = spidev.SpiDev()
+SPI.open(0, 0)
 
-# Pino de conexao Raspberry
-# (podem ser utilizados os pinos 10, 12, 18 ou 21)
-pixel_pin = board.D18
+QTD_LEDS = 15
+CORES = []
 
-# Numero de leds que serao controlados
-num_pixels = 15
+def setColor(r, g, b):
+    return [g, r, b]
 
-# Ordem dos pixels de cor - RGB ou GRB
-# Em alguns módulos as cores verde e vermelha estao invertidas
-ORDER = neopixel.GRB
+def setFitaAllColor(r, g, b):
+    return [setColor(r, g, b)] * QTD_LEDS
 
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.1, auto_write=False,
-                           pixel_order=ORDER)
+def setColorArray(arrayColor):
+    executarFita(setFitaAllColor(arrayColor[0], arrayColor[1], arrayColor[2]))
 
-
-def wheel(pos):
-    # Utiliza um valor entre 0 e 255 para definir a cor
-    # As cores sao uma transicao r - g - b
-    if pos < 0 or pos > 255:
-        r = g = b = 0
-    elif pos < 85:
-        r = int(pos * 3)
-        g = int(255 - pos * 3)
-        b = 0
-    elif pos < 170:
-        pos -= 85
-        r = int(255 - pos * 3)
-        g = 0
-        b = int(pos * 3)
-    else:
-        pos -= 170
-        r = 0
-        g = int(pos * 3)
-        b = int(255 - pos * 3)
-    return (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
-
-
-def rainbow_cycle(wait):
-    for j in range(255):
-        for i in range(num_pixels):
-            pixel_index = (i * 256 // num_pixels) + j
-            pixels[i] = wheel(pixel_index & 255)
-        pixels.show()
-        time.sleep(wait)
-
+def executarFita(comando):
+    ws2812.write2812(SPI, comando)
 
 def temperatura(arrecadacao):
-    try:
-        pixels.fill((0, 0, 0))
-        pixels.show()
-        while True:
-            print(arrecadacao)
-            if arrecadacao < 1000000:
-                for x in range(5):
-                    pixels[x] = (0, 255, 0)
-            elif arrecadacao > 1000000 and arrecadacao < 1000000000:
-                for x in range(10):
-                    if x <= 4:
-                        pixels[x] = (0, 255, 0)
-                    else:
-                        pixels[x] = (255, 255, 0)
-            else:
-                for x in range(15):
-                    if x <= 4:
-                        pixels[x] = (0, 255, 0)
-                    elif x <= 9:
-                        pixels[x] = (255, 255, 0)
-                    else:
-                        pixels[x] = (255, 0, 0)
-            pixels.show()
-
-    except KeyboardInterrupt:
-        # Apaga todos os leds
-        pixels.fill((0, 0, 0))
-        pixels.show()
-        GPIO.cleanup()
-
-
-try:
-    while True:
-        # Desabilite esta linha se for usar Neopixel RGBW/GRBW
-        pixels.fill((255, 0, 0))
-        # Habilite esta linha se for usar Neopixel RGBW/GRBW
-        # pixels.fill((255, 0, 0, 0))
-        pixels.show()
-        time.sleep(1)
-        # Desabilite esta linha se for usar Neopixel RGBW/GRBW
-        pixels.fill((0, 255, 0))
-        # Habilite esta linha se for usar Neopixel RGBW/GRBW
-        # pixels.fill((0, 255, 0, 0))
-        pixels.show()
-        time.sleep(1)
-        # Desabilite esta linha se for usar Neopixel RGBW/GRBW
-        pixels.fill((0, 0, 255))
-        # Habilite esta linha se for usar Neopixel RGBW/GRBW
-        # pixels.fill((0, 0, 255, 0))
-        pixels.show()
-        time.sleep(1)
-
-        # Efeito arco-iris com ciclo de 1ms por passo
-        rainbow_cycle(0.001)
-
-except KeyboardInterrupt:
-    # Apaga todos os leds
-    pixels.fill((0, 0, 0))
-    pixels.show()
-    GPIO.cleanup()
+    novo = setFitaAllColor(255, 255, 255)
+    pos = 0
+    print(arrecadacao)
+    if arrecadacao == 0:
+        print('entrei 0%')
+        for x in range(3):
+            novo[pos] = setColor(0, 255, 0)
+            pos += 1
+    if arrecadacao > 0:
+        print('entrei maior que 0%')
+        for x in range(5):
+            novo[pos] = setColor(0, 255, 0)
+            pos += 1
+    if arrecadacao > 3:
+        print('entrei maior que 3%')
+        for x in range(3):
+            novo[pos] = setColor(255, 102, 0)
+            pos += 1
+    if arrecadacao > 5:
+        print('entrei maior que 5%')
+        for x in range(2):
+            novo[pos] = setColor(255, 102, 0)
+            pos += 1
+    if arrecadacao > 10:
+        print('entrei maior que 10%')
+        for x in range(3):
+            novo[pos] = setColor(255, 0, 0)
+            pos += 1
+    if arrecadacao > 40:
+        print('entrei maior que 40%')
+        for x in range(2):
+            novo[pos] = setColor(255, 0, 0)
+            pos += 1
+    return novo
